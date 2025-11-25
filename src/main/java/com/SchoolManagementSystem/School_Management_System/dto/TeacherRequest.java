@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherRequest {
+public class TeacherRequest  {
     @NotBlank(message = "Name is required")
     private String name;
 
