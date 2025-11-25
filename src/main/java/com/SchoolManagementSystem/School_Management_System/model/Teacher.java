@@ -1,5 +1,7 @@
 package com.SchoolManagementSystem.School_Management_System.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,5 +30,6 @@ public class Teacher {
     private String department;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore // Don't serialize lazy-loaded subjects list to prevent circular reference
     private List<Subject> subjects = new ArrayList<>();
 }

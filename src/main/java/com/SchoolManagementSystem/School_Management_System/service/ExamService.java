@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.School_Management_System.service;
 
+import com.SchoolManagementSystem.School_Management_System.dto.BulkExamRequest;
 import com.SchoolManagementSystem.School_Management_System.dto.ExamRequest;
 import com.SchoolManagementSystem.School_Management_System.model.Exam;
 import com.SchoolManagementSystem.School_Management_System.model.Student;
@@ -9,7 +10,10 @@ import com.SchoolManagementSystem.School_Management_System.repository.StudentRep
 import com.SchoolManagementSystem.School_Management_System.repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +48,31 @@ public class ExamService {
         exam.setObtainedMarks(examRequest.getObtainedMarks());
 
         return examRepository.save(exam);
+    }
+
+    @Transactional
+    public List<Exam> createBulkExams(BulkExamRequest bulkExamRequest) {
+        Subject subject = subjectRepository.findById(bulkExamRequest.getSubjectId())
+                .orElseThrow(() -> new RuntimeException("Subject not found with id: " + bulkExamRequest.getSubjectId()));
+
+        LocalDate examDate = LocalDate.parse(bulkExamRequest.getExamDate());
+        List<Exam> exams = new ArrayList<>();
+
+        for (var studentExamData : bulkExamRequest.getStudentExams()) {
+            Student student = studentRepository.findById(studentExamData.getStudentId())
+                    .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentExamData.getStudentId()));
+
+            Exam exam = new Exam();
+            exam.setStudent(student);
+            exam.setSubject(subject);
+            exam.setExamDate(examDate);
+            exam.setTotalMarks(studentExamData.getTotalMarks());
+            exam.setObtainedMarks(studentExamData.getObtainedMarks());
+
+            exams.add(examRepository.save(exam));
+        }
+
+        return exams;
     }
 
     public Exam updateExam(Long id, ExamRequest examRequest) {

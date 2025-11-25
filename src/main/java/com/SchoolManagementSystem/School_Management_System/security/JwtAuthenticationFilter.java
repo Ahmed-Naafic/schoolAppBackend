@@ -27,6 +27,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String authorizationHeader = request.getHeader("Authorization");
+        
+        // Log CORS preflight requests
+        if ("OPTIONS".equals(request.getMethod())) {
+            logger.info("CORS preflight request for: " + request.getRequestURI());
+        }
 
         String username = null;
         String jwt = null;
@@ -35,9 +40,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwt = authorizationHeader.substring(7);
             try {
                 username = jwtUtil.extractUsername(jwt);
+                logger.info("JWT token validated for user: " + username);
             } catch (Exception e) {
-                logger.error("JWT token is invalid or expired");
+                logger.error("JWT token is invalid or expired: " + e.getMessage());
             }
+        } else {
+            logger.info("No Authorization header found for request: " + request.getRequestURI());
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

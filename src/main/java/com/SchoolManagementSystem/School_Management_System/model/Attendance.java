@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.School_Management_System.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,10 +20,12 @@ public class Attendance {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
+    @JsonIgnoreProperties({"exams", "subjects", "attendances", "fees", "hibernateLazyInitializer", "handler"})
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id", nullable = false)
+    @JsonIgnoreProperties({"exams", "students", "attendances", "fees", "hibernateLazyInitializer", "handler"})
     private Subject subject;
 
     @Column(nullable = false)

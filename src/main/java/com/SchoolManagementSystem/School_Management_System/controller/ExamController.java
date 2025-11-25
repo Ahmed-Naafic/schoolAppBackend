@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.School_Management_System.controller;
 
+import com.SchoolManagementSystem.School_Management_System.dto.BulkExamRequest;
 import com.SchoolManagementSystem.School_Management_System.dto.ExamRequest;
 import com.SchoolManagementSystem.School_Management_System.model.Exam;
 import com.SchoolManagementSystem.School_Management_System.service.ExamService;
@@ -49,6 +50,12 @@ public class ExamController {
     public ResponseEntity<Exam> createExam(@Valid @RequestBody ExamRequest examRequest) {
         Exam exam = examService.createExam(examRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(exam);
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<List<Exam>> createBulkExams(@Valid @RequestBody BulkExamRequest bulkExamRequest) {
+        List<Exam> exams = examService.createBulkExams(bulkExamRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(exams);
     }
 
     @PutMapping("/{id}")

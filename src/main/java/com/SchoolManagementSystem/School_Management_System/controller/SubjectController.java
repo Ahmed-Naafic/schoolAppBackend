@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,16 +22,17 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @GetMapping
+    @Transactional(readOnly = true)
     public ResponseEntity<List<Subject>> getAllSubjects() {
         List<Subject> subjects = subjectService.getAllSubjects();
         return ResponseEntity.ok(subjects);
     }
 
     @GetMapping("/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<Subject> getSubjectById(@PathVariable Long id) {
         Optional<Subject> subject = subjectService.getSubjectById(id);
-        return subject.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return subject.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

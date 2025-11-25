@@ -17,4 +17,5 @@ public class SubjectRequest {
 
     private String description;
     private Long teacherId;
+    private Double price = 0.0;
 }

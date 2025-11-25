@@ -1,5 +1,6 @@
 package com.SchoolManagementSystem.School_Management_System.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,4 +25,11 @@ public class StudentRequest {
     private String gender;
     private String address;
     private LocalDate dateOfBirth;
+    
+    @JsonProperty("class")
+    private String className;
+    private String parentName;
+    private String parentPhone;
+    private Double discount = 0.0;
+    private List<Long> subjectIds;
 }

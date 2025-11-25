@@ -1,6 +1,7 @@
 package com.SchoolManagementSystem.School_Management_System.controller;
 
 import com.SchoolManagementSystem.School_Management_System.dto.AttendanceRequest;
+import com.SchoolManagementSystem.School_Management_System.dto.BulkAttendanceRequest;
 import com.SchoolManagementSystem.School_Management_System.model.Attendance;
 import com.SchoolManagementSystem.School_Management_System.service.AttendanceService;
 import jakarta.validation.Valid;
@@ -58,6 +59,12 @@ public class AttendanceController {
     public ResponseEntity<Attendance> createAttendance(@Valid @RequestBody AttendanceRequest attendanceRequest) {
         Attendance attendance = attendanceService.createAttendance(attendanceRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(attendance);
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<List<Attendance>> createBulkAttendance(@Valid @RequestBody BulkAttendanceRequest bulkAttendanceRequest) {
+        List<Attendance> attendances = attendanceService.createBulkAttendance(bulkAttendanceRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(attendances);
     }
 
     @PutMapping("/{id}")
